@@ -1,0 +1,43 @@
+LocationGroup,Location,Priority
+F&B / Bếp,Bếp nhà hàng / bếp công nghiệp / cooking school,P2
+F&B / Bếp,Tiệm bánh / pastry / cake / bakery,P2
+F&B / Bếp,Quầy đồ ăn nhanh / food stall / takeaway,P2
+F&B / Đồ uống,Quầy pha chế / bar / coffee / ice cream,P2
+F&B / Chế biến,Xưởng thực phẩm đóng gói / nông sản chế biến,P2
+F&B / Chế biến,Xưởng gạo / nước / dairy,P2
+F&B / Chế biến,Quầy thịt/cá / butcher/fishmonger,P3
+Bán lẻ,Siêu thị / grocery / produce shop,P1
+Bán lẻ,Cây cảnh / garden / nursery shop,P1
+Bán lẻ,Cửa hàng nhỏ đa ngành,P1
+Bán lẻ,Điện tử / điện máy / máy tính / điện thoại,P2
+Bán lẻ,Vật liệu / sơn / đồ nghề / hóa phẩm vệ sinh,P2
+Bán lẻ,Nội thất / thảm / home decor,P2
+Bán lẻ,Nhà thuốc / mỹ phẩm / personal care,P2
+Dịch vụ cá nhân,Salon tóc / barber / nail,P1
+Khách sạn / vệ sinh,Giặt là / laundry,P2
+Cơ khí / điện,Hàn / metal fabrication / toolmaker,P2
+Dịch vụ cá nhân,Spa / personal care,P2
+Dịch vụ cá nhân,Pet shop / grooming,P3
+Khách sạn / vệ sinh,Housekeeping khách sạn / BnB,P1
+Khách sạn / vệ sinh,Cleaning service / office cleaning,P1
+Auto / sửa chữa,Garage ô tô / xe máy / detailing,P1
+Auto / sửa chữa,Xe đạp / thiết bị nhỏ / appliance repair,P1
+Cơ khí / điện,Workshop cơ khí / điện / ô tô nghề,P1
+Cơ khí / điện,Điện dân dụng / thiết bị điện / transformer,P1
+Gỗ / xây dựng / sơn,Mộc / woodworking / nội thất,P1
+Gỗ / xây dựng / sơn,Sơn / renovation / construction site,P3
+In ấn / decal,Print shop / sign shop / art framing,P1
+May mặc / da giày,May / dệt / thêu / knitwear,P2
+May mặc / da giày,Túi da / túi vải / reupholstery,P2
+May mặc / da giày,Sửa giày / shoe repair / shoe manufacturing,P2
+Thủ công,Thủ công / candle / mosaic / mây tre,P2
+Thủ công,Trang sức / kính mắt,P3
+Nông nghiệp,Nông trại trồng trọt / nhà vườn,P2
+Nông nghiệp,Chăn nuôi / dairy farm,P3
+Kho vận,Kho hàng / logistics center / SME warehouse,P1
+Kho vận,Fulfillment / giao hàng / freight handling,P2
+Sản xuất / bao bì,Bao bì giấy / carton / nhựa,P2
+Sản xuất / OEM,Mỹ phẩm OEM / personal care manufacturing,P3
+Sản xuất kỹ thuật,Màn hình / solar / recycling,P3
+Y tế / lab,Phòng khám / nha khoa / wet lab,P3
+Giáo dục / thể thao,Thư viện / gym / sports store/court,P3
