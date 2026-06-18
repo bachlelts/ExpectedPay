@@ -310,7 +310,7 @@ function setupFormSubmission() {
             "Số ngày quay PA2": parseInt(document.getElementById('pa2Days').value) || 0
         };
 
-        const apiUrl = 'http://localhost:3000/api/referral-program';
+        const apiUrl = 'https://dataops.work/api/referral-program';
 
         fetch(apiUrl, {
             method: 'POST',
@@ -374,7 +374,7 @@ function loadReferralData() {
     referralTableBody.innerHTML = '<tr><td colspan="3" style="padding: 1rem; text-align: center; color: #64748b;">Đang tải dữ liệu từ máy chủ...</td></tr>';
 
     // Thay url này bằng Endpoint GET API thực tế của bạn
-    const getApiUrl = 'http://localhost:3000/api/referral-program'; 
+    const getApiUrl = 'https://dataops.work/api/referral-program'; 
 
     fetch(getApiUrl, {
         method: 'GET',
