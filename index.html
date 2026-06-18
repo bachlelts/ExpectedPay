@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Tính Toán Thu Nhập</title>
+    <title>Hệ Thống Tính Toán Thu Nhập & Đăng Ký</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <style>
         :root {
@@ -13,6 +13,7 @@
             --card-bg: #ffffff;
             --text: #1e293b;
             --border: #e2e8f0;
+            --success: #16a34a;
         }
         
         body {
@@ -22,6 +23,29 @@
             line-height: 1.5;
             margin: 0;
             padding: 2rem 1rem;
+        }
+
+        .nav-container {
+            max-width: 600px;
+            margin: 0 auto 1rem auto;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 0.75rem;
+            background-color: #e2e8f0;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-btn.active {
+            background-color: var(--primary);
+            color: white;
         }
 
         .container {
@@ -45,6 +69,17 @@
             margin-bottom: 1.5rem;
         }
 
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
         label {
             display: block;
             font-weight: 600;
@@ -52,7 +87,7 @@
             font-size: 0.95rem;
         }
 
-        select, input[type="number"] {
+        select, input[type="number"], input[type="text"], input[type="date"] {
             width: 100%;
             padding: 0.75rem;
             border: 1px solid var(--border);
@@ -83,7 +118,7 @@
         }
 
         .hidden {
-            display: none;
+            display: none !important;
         }
 
         .result-box {
@@ -107,18 +142,174 @@
             color: #1d4ed8;
         }
 
-        .status {
-            font-size: 0.85rem;
-            color: #64748b;
-            margin-top: 0.5rem;
+        /* Animated Drop-down Notification Container */
+        .status-toast {
+            position: fixed;
+            top: -100px; /* Hidden above the viewport initially */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ffffff;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            z-index: 9999;
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Smooth bounce effect */
+            border-left: 5px solid #64748b;
         }
+
+        /* Status Variant Modifiers */
+        .status-toast.show {
+            top: 20px; /* Slides down to this position */
+        }
+
+        .status-toast.success {
+            border-left-color: var(--success);
+            color: #16a34a;
+            background-color: #f0fdf4;
+        }
+
+        .status-toast.error {
+            border-left-color: #dc2626;
+            color: #dc2626;
+            background-color: #fef2f2;
+        }
+
+        .status-toast.loading {
+            border-left-color: var(--primary);
+            color: #2563eb;
+            background-color: #eff6ff;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.85rem;
+            background-color: var(--success);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            background-color: #15803d;
+        }
+
+        /* Khối bao bọc định dạng các Phương Án */
+        .pa-box {
+            padding: 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+        }
+        .gray-box {
+            background-color: #f8fafc;
+        }
+        .blue-box {
+            background-color: #f0fdf4; /* Đổi sang tông xanh lá nhẹ để phân biệt */
+            border-color: #bbf7d0;
+        }
+        .pa2-header-label {
+            font-weight: bold;
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        /* Cấu trúc Tooltip Trực quan bằng CSS */
+        .label-with-tooltip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .tooltip-icon {
+            background-color: #cbd5e1;
+            color: #475569;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            font-size: 11px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: help;
+            position: relative;
+            font-family: serif;
+            font-weight: bold;
+        }
+
+        .tooltip-icon:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Nội dung ẩn hiển thị khi Hover */
+        .tooltip-icon .tooltip-text {
+            visibility: hidden;
+            width: 280px;
+            background-color: #1e293b;
+            color: #fff;
+            text-align: left;
+            border-radius: 8px;
+            padding: 0.75rem;
+            position: absolute;
+            z-index: 10;
+            bottom: 125%; /* Hiển thị phía trên biểu tượng */
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.2s;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            font-weight: normal;
+            line-height: 1.4;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            font-size: 0.85rem;
+        }
+
+        /* Tạo mũi tên nhỏ phía dưới khung tooltip */
+        .tooltip-icon .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #1e293b transparent transparent transparent;
+        }
+
+        /* Kích hoạt hiển thị khi di chuột */
+        .tooltip-icon:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Sửa khoảng cách cột ngày cho cân bằng */
+        .form-date-group {
+            flex: 1;
+        }
+
     </style>
 </head>
 <body>
 
-<div class="container">
+<div class="nav-container">
+    <button id="showCalcBtn" class="nav-btn active">Công cụ tính toán</button>
+    <button id="showFormBtn" class="nav-btn">Gửi form thông tin</button>
+    <button id="showReferralBtn" class="nav-btn">Kết quả giới thiệu</button>
+</div>
+
+<div class="container" id="calculatorView">
     <h1>Công Cụ Tính Thu Nhập Dự Kiến</h1>
-    <div id="status" class="status">Đang tải dữ liệu tệp tin...</div>
 
     <form id="calcForm" style="margin-top: 1.5rem;">
         <div class="form-group">
@@ -167,6 +358,127 @@
             <div id="totalPay" class="result-amount">0 ₫</div>
         </div>
     </form>
+</div>
+
+
+<div class="container hidden" id="submissionView">
+    <h1>Đăng Ký Thông Tin Khảo Sát</h1>
+    <div id="globalToast" class="status-toast">Đang xử lý...</div>
+
+    <form id="submissionForm" style="margin-top: 1.5rem;">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="referrerId">ID người giới thiệu</label>
+                <input type="text" id="referrerId" required placeholder="Nhập ID">
+            </div>
+            <div class="form-date-group">
+                <label for="startDate">Ngày có thể bắt đầu</label>
+                <input type="date" id="startDate" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="address">Địa chỉ</label>
+            <input type="text" id="address" required placeholder="Nhập số nhà, tên đường...">
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="contactPoint">Đầu mối liên lạc (Tên và SĐT)</label>
+                <input type="text" id="contactPoint" required placeholder="Tên / SĐT người liên hệ">
+            </div>
+            <div class="form-group">
+                <label for="city">Tỉnh / Thành phố</label>
+                <input type="text" id="city" required placeholder="Ví dụ: Hà Nội">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="formLocationGroup">Nhóm location</label>
+            <select id="formLocationGroup" required disabled>
+                <option value="">-- Vui lòng chọn nhóm location --</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="formLocationDetails">Chi tiết</label>
+            <select id="formLocationDetails" required disabled>
+                <option value="">-- Vui lòng chọn chi tiết địa điểm --</option>
+            </select>
+        </div>
+
+        <div class="pa-box gray-box">
+            <div class="form-group" style="margin-bottom: 0;">
+                <label for="pa1Days" class="label-with-tooltip">
+                    Số ngày quay cho Phương Án 1
+                    <span class="tooltip-icon">i
+                        <span class="tooltip-text">
+                            <strong>Phương án 1:</strong> GDS thuê Location và đưa người tới quay.<br><br>
+                            <strong>Điều kiện đạt mức 3:</strong><br>
+                            - Location hỗ trợ trang thiết bị.<br>
+                            - 1 buổi quay từ 5-10 người tùy sức chứa.<br>
+                            - Tối thiểu 5 ngày/location, 60 valid hour/location.
+                        </span>
+                    </span>
+                </label>
+                <input type="number" id="pa1Days" min="0" value="0" required>
+            </div>
+        </div>
+
+        <div class="pa-box blue-box">
+            <div class="pa2-header-label">
+                Hình thức Phương án 2 
+                <span class="tooltip-icon">i
+                    <span class="tooltip-text">
+                        <strong>Phương án 2:</strong> GDS cung cấp điện thoại và thiết bị gắn đầu. Nhân viên tại business tự quay lại công việc hàng ngày.<br><br>
+                        <strong>Điều kiện đạt mức 3:</strong><br>
+                        - Biz có từ trên 3 nhân viên tham gia quay.<br>
+                        - Có thể quay được từ 15 ngày trở lên.<br>
+                        - 8h quay được khoảng 5 valid hours ~ tổng 225 valid hour.
+                    </span>
+                </span>
+            </div>
+            <div class="form-row" style="margin-bottom: 0;">
+                <div class="form-group">
+                    <label for="numPeople">Số người quay</label>
+                    <input type="number" id="numPeople" min="0" value="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="pa2Days">Số ngày quay PA2</label>
+                    <input type="number" id="pa2Days" min="0" value="0" required>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="submit-btn">Gửi thông tin dữ liệu</button>
+    </form>
+</div>
+
+<div class="container hidden" id="referralView">
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+        <h1 style="margin: 0; border: none; padding: 0;">Kết Quả Giới Thiệu</h1>
+        <button id="refreshReferralBtn" type="button" style="padding: 0.5rem 1rem; background-color: var(--primary); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; transition: background-color 0.2s;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            Tải lại dữ liệu
+        </button>
+    </div>
+    
+    <div style="overflow-x: auto;">
+        <table id="referralTable" style="width: 100%; border-collapse: collapse; text-align: left;">
+            <thead>
+                <tr style="background-color: var(--primary); color: white;">
+                    <th style="padding: 0.75rem; border: 1px solid var(--border);">Referral_ID</th>
+                    <th style="padding: 0.75rem; border: 1px solid var(--border);">Count</th>
+                    <th style="padding: 0.75rem; border: 1px solid var(--border);">Maximum_pay_expected</th>
+                </tr>
+            </thead>
+            <tbody id="referralTableBody">
+                <tr>
+                    <td colspan="3" style="padding: 1rem; text-align: center; color: #64748b;">Đang tải dữ liệu...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script src="app.js"></script>
