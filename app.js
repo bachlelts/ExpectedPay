@@ -393,6 +393,13 @@ function loadReferralData() {
             return;
         }
 
+        // --- SORT DATA BY Maximum_pay_expected (Descending) ---
+        data.sort((a, b) => {
+            const payA = Number(a.Maximum_pay_expected) || 0;
+            const payB = Number(b.Maximum_pay_expected) || 0;
+            return payB - payA; // Change to 'payA - payB' for ascending order
+        });
+
         // Tạo vòng lặp duyệt dữ liệu và dựng các hàng (Row) cho bảng hiển thị
         data.forEach(item => {
             const row = document.createElement('tr');
